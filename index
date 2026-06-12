@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтерактивний Градієнт</title>
+    <style>
+        /* Скидання стандартних відступів */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0a0a16; /* Глибокий темний колір фону */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        /* Контейнер для інтерактивного градієнта */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            /* Використовуємо CSS-змінні --x та --y, які оновлюються через JS */
+            background: radial-gradient(
+                circle 600px at var(--x, 50%) var(--y, 50%), 
+                rgba(29, 78, 216, 0.15), /* Синій колір світіння */
+                rgba(124, 58, 237, 0.1), /* Фіолетовий відтінок */
+                transparent 80%
+            );
+            /* Додає плавність при швидкому русі миші */
+            transition: background 0.1s ease-out; 
+        }
+
+        /* Контент сайту (поверх градієнта) */
+        .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            pointer-events: none; /* Щоб текст не заважав зчитуванню координат миші */
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gradient-bg" id="gradient"></div>
+
+    <div class="content">
+        <h1>Привіт, світе!</h1>
+        <p>Порухай мишкою, щоб побачити магію градієнта.</p>
+    </div>
+
+    <script>
+        const gradient = document.getElementById('gradient');
+
+        // Відстежуємо рух миші по всьому екрану
+        window.addEventListener('mousemove', (e) => {
+            // Отримуємо координати курсора у відсотках відносно розміру вікна
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+
+            // Передаємо ці значення в CSS-змінні
+            gradient.style.setProperty('--x', `${x}%`);
+            gradient.style.setProperty('--y', `${y}%`);
+        });
+    </script>
+</body>
+</html>
